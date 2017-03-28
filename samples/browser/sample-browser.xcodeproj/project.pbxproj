@@ -83,6 +83,8 @@
 		F10DEAB816726157006FFFDC /* BillboardSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F10DEAB516726157006FFFDC /* BillboardSample.cpp */; };
 		F1E4B3FA1671372E007516A7 /* FormsSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1E4B3F81671372E007516A7 /* FormsSample.cpp */; };
 		F1E4B3FB1671372E007516A7 /* FormsSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1E4B3F81671372E007516A7 /* FormsSample.cpp */; };
+		FA5F95C41E893D4C00B0AC9C /* DuckSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA5F95C21E893D4C00B0AC9C /* DuckSample.cpp */; };
+		FA5F95C51E893D4C00B0AC9C /* DuckSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA5F95C21E893D4C00B0AC9C /* DuckSample.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -163,6 +165,8 @@
 		F10DEAB616726157006FFFDC /* BillboardSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BillboardSample.h; sourceTree = "<group>"; };
 		F1E4B3F81671372E007516A7 /* FormsSample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FormsSample.cpp; sourceTree = "<group>"; };
 		F1E4B3F91671372E007516A7 /* FormsSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormsSample.h; sourceTree = "<group>"; };
+		FA5F95C21E893D4C00B0AC9C /* DuckSample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DuckSample.cpp; sourceTree = "<group>"; };
+		FA5F95C31E893D4C00B0AC9C /* DuckSample.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DuckSample.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +300,8 @@
 				420D545715FE430D00AD0B91 /* TriangleSample.h */,
 				4258369B1A0F2AF400AFDFEB /* WaterSample.cpp */,
 				4258369C1A0F2AF400AFDFEB /* WaterSample.h */,
+				FA5F95C21E893D4C00B0AC9C /* DuckSample.cpp */,
+				FA5F95C31E893D4C00B0AC9C /* DuckSample.hpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -462,6 +468,7 @@
 				42097DF51A28C4B000D0B312 /* SpriteSample.cpp in Sources */,
 				420D545E15FE430D00AD0B91 /* Grid.cpp in Sources */,
 				420D546015FE430D00AD0B91 /* InputSample.cpp in Sources */,
+				FA5F95C41E893D4C00B0AC9C /* DuckSample.cpp in Sources */,
 				420D546215FE430D00AD0B91 /* SceneLoadSample.cpp in Sources */,
 				420D546415FE430D00AD0B91 /* MeshBatchSample.cpp in Sources */,
 				420D546615FE430D00AD0B91 /* MeshPrimitiveSample.cpp in Sources */,
@@ -495,6 +502,7 @@
 				42097DF61A28C4B000D0B312 /* SpriteSample.cpp in Sources */,
 				420D545F15FE430D00AD0B91 /* Grid.cpp in Sources */,
 				420D546115FE430D00AD0B91 /* InputSample.cpp in Sources */,
+				FA5F95C51E893D4C00B0AC9C /* DuckSample.cpp in Sources */,
 				420D546315FE430D00AD0B91 /* SceneLoadSample.cpp in Sources */,
 				420D546515FE430D00AD0B91 /* MeshBatchSample.cpp in Sources */,
 				420D546715FE430D00AD0B91 /* MeshPrimitiveSample.cpp in Sources */,

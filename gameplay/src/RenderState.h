@@ -131,6 +131,8 @@ public:
          */
         WORLD_VIEW_PROJECTION_MATRIX,
 
+        //逆的转置矩阵：http://blog.csdn.net/seizef/article/details/6706541
+        //http://computergraphics.stackexchange.com/questions/1502/why-is-the-transposed-inverse-of-the-model-view-matrix-used-to-transform-the-nor
         /**
          * Binds a node's InverseTransposeWorl matrix.
          */

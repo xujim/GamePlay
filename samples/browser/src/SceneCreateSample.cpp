@@ -70,18 +70,43 @@ void SceneCreateSample::initialize()
     _font = Font::create("res/ui/arial.gpb");
 
     // Create a new empty scene.
-    _scene = Scene::create();
-
+//    _scene = Scene::create();
+    Bundle* bundle = Bundle::create("res/common/duck.gpb");
+    _scene = bundle->loadScene();
+    SAFE_RELEASE(bundle);
+    
     // Create the camera.
     Camera* camera = Camera::createPerspective(45.0f, getAspectRatio(), 1.0f, 10.0f);
     Node* cameraNode = _scene->addNode("camera");
-
+    
     // Attach the camera to a node. This determines the position of the camera.
     cameraNode->setCamera(camera);
-
+    
     // Make this the active camera of the scene.
     _scene->setActiveCamera(camera);
     SAFE_RELEASE(camera);
+    
+    
+    //    _scene->getActiveCamera()->setAspectRatio(getAspectRatio());
+    Camera *c = _scene->getActiveCamera();
+    Node *mynode = NULL;
+    while((mynode = _scene->getNext())){
+        const char * id = mynode->getId();
+        gameplay::print("%s/d",id);
+    }
+
+    
+    Node *duckNode = _scene->findNode("duck");
+    Model* model = dynamic_cast<Model*>(duckNode->getDrawable());
+    Material* material1 = model->setMaterial("res/common/duck.material");
+    // Get light node
+    Node* lightNode1 = _scene->findNode("directionalLight1");
+    Light* light1 = lightNode1->getLight();
+    material1->getParameter("u_directionalLightColor[0]")->setValue(light1->getColor());
+    material1->getParameter("u_directionalLightDirection[0]")->setValue(lightNode1->getForwardVectorView());
+
+    // Get handles to the nodes of interest in the scene
+//    _modelNode = scene->findNode("duck");
 
     // Move the camera to look at the origin.
     cameraNode->translate(0, 1, 5);
@@ -137,7 +162,9 @@ void SceneCreateSample::finalize()
 void SceneCreateSample::update(float elapsedTime)
 {
     // Rotate the directional light.
-    _cubeNode->rotateY(elapsedTime * 0.001 * MATH_PI);
+    if(_cubeNode){
+        _cubeNode->rotateY(elapsedTime * 0.001 * MATH_PI);
+    }
 }
 
 void SceneCreateSample::render(float elapsedTime)

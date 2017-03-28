@@ -55,7 +55,6 @@
 		42C8EE3314724CD700E43619 /* VertexElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42C8EE0814724CD700E43619 /* VertexElement.cpp */; };
 		42C8EE371472D7E700E43619 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 42C8EE361472D7E700E43619 /* libxml2.dylib */; };
 		42F7155C195CAF5E0010141C /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42F7155B195CAF5E0010141C /* libfreetype.a */; };
-		431412751A58762F007AAC9A /* libfbxsdk-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 431412741A58762F007AAC9A /* libfbxsdk-static.a */; };
 		43BD156A1A581FBE003CA5FF /* libgameplay-deps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43BD15691A581FBE003CA5FF /* libgameplay-deps.a */; };
 		B661733F16A61CE40083A307 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B661733D16A61CE40083A307 /* Image.cpp */; };
 		B661734316A61CFA0083A307 /* NormalMapGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B661734116A61CFA0083A307 /* NormalMapGenerator.cpp */; };
@@ -65,6 +64,7 @@
 		C076C906174F6D2E00645678 /* FBXUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C076C901174F6D2E00645678 /* FBXUtil.cpp */; };
 		C076C907174F6D2E00645678 /* Sampler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C076C903174F6D2E00645678 /* Sampler.cpp */; };
 		F18DCD0615D554B800DB35DB /* Heightmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F18DCD0315D554B800DB35DB /* Heightmap.cpp */; };
+		FA5F95C11E8928C500B0AC9C /* libfbxsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5F95C01E8928C500B0AC9C /* libfbxsdk.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -192,6 +192,7 @@
 		F18DCD0315D554B800DB35DB /* Heightmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Heightmap.cpp; path = src/Heightmap.cpp; sourceTree = SOURCE_ROOT; };
 		F18DCD0415D554B800DB35DB /* Heightmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Heightmap.h; path = src/Heightmap.h; sourceTree = SOURCE_ROOT; };
 		F18DCD0515D554B800DB35DB /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = src/Thread.h; sourceTree = SOURCE_ROOT; };
+		FA5F95C01E8928C500B0AC9C /* libfbxsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfbxsdk.a; path = "../../../../../../Applications/Autodesk/FBX SDK/2017.1/lib/clang/debug/libfbxsdk.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,7 +200,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				431412751A58762F007AAC9A /* libfbxsdk-static.a in Frameworks */,
+				FA5F95C11E8928C500B0AC9C /* libfbxsdk.a in Frameworks */,
 				43BD156A1A581FBE003CA5FF /* libgameplay-deps.a in Frameworks */,
 				42C8EE371472D7E700E43619 /* libxml2.dylib in Frameworks */,
 				4228A3FF1620A5A300955433 /* Cocoa.framework in Frameworks */,
@@ -218,6 +219,7 @@
 		4228A3FD1620A58000955433 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA5F95C01E8928C500B0AC9C /* libfbxsdk.a */,
 				431412741A58762F007AAC9A /* libfbxsdk-static.a */,
 				4228A4001620A5EC00955433 /* SystemConfiguration.framework */,
 				4228A3FE1620A5A300955433 /* Cocoa.framework */,
@@ -569,11 +571,12 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../external-deps/include",
-					"\"/Applications/Autodesk/FBX SDK/2015.1/include\"",
+					"\"/Applications/Autodesk/FBX SDK/2017.1/include\"",
 				);
+				LD_RUNPATH_SEARCH_PATHS = "-L$(SYSTEM_APPS_DIR)/Autodesk/FBX\\ SDK/2017.1/lib/clang/debug";
 				LIBRARY_SEARCH_PATHS = "../../external-deps/lib/macosx/x86_64";
 				MACH_O_TYPE = mh_execute;
-				OTHER_LDFLAGS = "-L$(SYSTEM_APPS_DIR)/Autodesk/FBX\\ SDK/2015.1/lib/clang/debug";
+				OTHER_LDFLAGS = "-L$(SYSTEM_APPS_DIR)/Autodesk/FBX\\ SDK/2017.1/lib/clang/debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = x86_64;
 			};
@@ -590,11 +593,12 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../external-deps/include",
-					"\"/Applications/Autodesk/FBX SDK/2015.1/include\"",
+					"\"/Applications/Autodesk/FBX SDK/2017.1/include\"",
 				);
+				LD_RUNPATH_SEARCH_PATHS = "-L$(SYSTEM_APPS_DIR)/Autodesk/FBX\\ SDK/2017.1/lib/clang/debug";
 				LIBRARY_SEARCH_PATHS = "../../external-deps/lib/macosx/x86_64";
 				MACH_O_TYPE = mh_execute;
-				OTHER_LDFLAGS = "-L$(SYSTEM_APPS_DIR)/Autodesk/FBX\\ SDK/2015.1/lib/clang/release";
+				OTHER_LDFLAGS = "-L$(SYSTEM_APPS_DIR)/Autodesk/FBX\\ SDK/2017.1/lib/clang/release";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = x86_64;
 			};
