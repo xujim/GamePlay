@@ -38,6 +38,8 @@ private:
     Font* _font;
     Scene* _scene;
     bool _wireFrame;
+    bool _translate;
+    float _lastY, _lastX;
 };
 
 #endif

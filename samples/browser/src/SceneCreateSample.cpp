@@ -60,7 +60,7 @@ static Mesh* createCubeMesh(float size = 1.0f)
 }
 
 SceneCreateSample::SceneCreateSample()
-    : _font(NULL), _scene(NULL), _cubeNode(NULL)
+    : _font(NULL), _scene(NULL), _cubeNode(NULL), _translate(false)
 {
 }
 
@@ -188,8 +188,10 @@ void SceneCreateSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned
             // Toggle Vsync if the user touches the top left corner
             setVsync(!isVsync());
         }
+            _translate = true;
         break;
     case Touch::TOUCH_RELEASE:
+            _translate = false;
         break;
     case Touch::TOUCH_MOVE:
         break;

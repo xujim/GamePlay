@@ -6,7 +6,7 @@
 #endif
 
 SceneLoadSample::SceneLoadSample()
-    : _font(NULL), _scene(NULL), _wireFrame(false)
+    : _font(NULL), _scene(NULL), _wireFrame(false), _translate(false), _lastY(0), _lastX(0)
 {
     
 }
@@ -36,7 +36,7 @@ void SceneLoadSample::initialize()
     SAFE_RELEASE(bundle);
 
     // Create the camera.
-    Camera* camera = Camera::createPerspective(60.0f, getAspectRatio(), 1.0f, 1000.0f);
+    Camera* camera = Camera::createPerspective(120.0f, getAspectRatio(), 1.0f, 10000.0f);
     Node* cameraNode = _scene->addNode("camera");
     
     // Attach the camera to a node. This determines the position of the camera.
@@ -44,10 +44,15 @@ void SceneLoadSample::initialize()
     
     // Make this the active camera of the scene.
     _scene->setActiveCamera(camera);
+    
+    //    Node *cameraNode = _scene->getActiveCamera()->getNode();
+    cameraNode->translateY(20000*0.01f);
+    cameraNode->translateZ(20000*0.06f);
+    
     SAFE_RELEASE(camera);
     
     Material* material = NULL;//createMaterial();
-    material = Material::create("res/common/light.material");
+//    material = Material::create("res/common/shafa3.material");
     Camera *c = _scene->getActiveCamera();
     Node *mynode = NULL;
     while((mynode = _scene->getNext())){
@@ -55,14 +60,15 @@ void SceneLoadSample::initialize()
         gameplay::print("--%s\n",id);
         
 //        Node *group001 = _scene->findNode("Group001");
-        if (material)
-        {
-            Model *model = dynamic_cast<Model*>(mynode->getDrawable());
-            //        int partIndex = model->getMesh()->getPartCount() > 0 ? i : -1;
-            if(model){
-                model->setMaterial(material);
-            }
-        }
+//        if (material)
+//        {
+//            Model *model = dynamic_cast<Model*>(mynode->getDrawable());
+//            //        int partIndex = model->getMesh()->getPartCount() > 0 ? i : -1;
+//            if(model){
+//                model->setMaterial(material);
+//                gameplay::print("!!!mater---%s\n",id);
+//            }
+//        }
     }
     
     SAFE_RELEASE(material);
@@ -100,6 +106,11 @@ void SceneLoadSample::render(float elapsedTime)
     // Clear the color and depth buffers
     clear(CLEAR_COLOR_DEPTH, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0);
 
+    if(_translate){
+        Node *cameraNode = _scene->getActiveCamera()->getNode();
+        cameraNode->translateY(elapsedTime*0.01f);
+        cameraNode->translateZ(elapsedTime*0.06f);
+    }
     // Visit all the nodes in the scene, drawing the models/mesh.
     _scene->visit(this, &SceneLoadSample::drawScene);
 
@@ -111,16 +122,24 @@ void SceneLoadSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned i
     switch (evt)
     {
     case Touch::TOUCH_PRESS:
+            _lastY = y;
+            _lastX = x;
         if (x < 75 && y < 50)
         {
             // Toggle Vsync if the user touches the top left corner
             setVsync(!isVsync());
             return;
         }
+            _translate = false;
         break;
     case Touch::TOUCH_RELEASE:
+            _translate = false;
         break;
     case Touch::TOUCH_MOVE:
+//            Node *node = _scene->getActiveCamera()->getNode();
+            Node *node = _scene->findNode("Group001");
+            node->rotateX(MATH_DEG_TO_RAD(0.01*(y-_lastY)));
+            node->rotateY(MATH_DEG_TO_RAD(0.01*(x-_lastX)));
         break;
     };
 }

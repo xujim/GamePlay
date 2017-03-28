@@ -34,6 +34,7 @@ private:
     Font* _font;
     Scene* _scene;
     Node* _cubeNode;
+    bool _translate;
 };
 
 #endif
