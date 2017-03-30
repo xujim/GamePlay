@@ -98,7 +98,8 @@ PhysicsCharacter* PhysicsCharacter::create(Node* node, Properties* properties)
         return NULL;
     }
 
-    // Load the physics collision shape definition.
+    // 外形
+    // Load the physics collision shape definition. this structure representing the definition of a collision shape
     PhysicsCollisionShape::Definition shape = PhysicsCollisionShape::Definition::create(node, properties);
     if (shape.isEmpty())
     {
@@ -106,6 +107,7 @@ PhysicsCharacter* PhysicsCharacter::create(Node* node, Properties* properties)
         return NULL;
     }
 
+    // 物理参数
     // Load the character's parameters.
     properties->rewind();
     float mass = 1.0f;

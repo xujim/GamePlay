@@ -120,6 +120,7 @@ private:
      * An animation can have 1 or more channels. All typical simple property animations
      * will have 1 channel. Skeletal animation will have 1 channel per joint to be animated.
      */
+    //Channel和animation是多对1的关系
     class Channel
     {
         friend class AnimationClip;

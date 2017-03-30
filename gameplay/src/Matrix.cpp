@@ -587,6 +587,7 @@ bool Matrix::getRotation(Quaternion* rotation) const
     return decompose(NULL, rotation, NULL);
 }
 
+//获取位移变换分量
 void Matrix::getTranslation(Vector3* translation) const
 {
     decompose(NULL, NULL, translation);
@@ -619,6 +620,7 @@ void Matrix::getLeftVector(Vector3* dst) const
     dst->z = -m[2];
 }
 
+//其实就是x轴上的分量：假设物体坐标系在世界坐标系中的基向量
 void Matrix::getRightVector(Vector3* dst) const
 {
     GP_ASSERT(dst);
@@ -726,7 +728,7 @@ void Matrix::multiply(const Matrix& m)
 {
     multiply(*this, m, this);
 }
-
+//M1XM2
 void Matrix::multiply(const Matrix& m1, const Matrix& m2, Matrix* dst)
 {
     GP_ASSERT(dst);

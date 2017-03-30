@@ -28,6 +28,7 @@ Node::Node(const char* id)
     _drawable(NULL), _camera(NULL), _light(NULL), _audioSource(NULL), _collisionObject(NULL), _agent(NULL), _userObject(NULL),
       _dirtyBits(NODE_DIRTY_ALL)
 {
+    //调用ScriptTarget::registerEvents(ScriptEvents::getInstance()->getRegistry())
     GP_REGISTER_SCRIPT_EVENTS();
     if (id)
     {
@@ -428,6 +429,7 @@ void Node::update(float elapsedTime)
     fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(Node, update), dynamic_cast<void*>(this), elapsedTime);
 }
 
+//会根据碰撞物体来检测
 bool Node::isStatic() const
 {
     return (_collisionObject && _collisionObject->isStatic());
@@ -448,6 +450,7 @@ const Matrix& Node::getWorldMatrix() const
             Node* parent = getParent();
             if (parent && (!_collisionObject || _collisionObject->isKinematic()))
             {
+                //Mworld x Mobject
                 Matrix::multiply(parent->getWorldMatrix(), getMatrix(), &_world);
             }
             else
@@ -473,6 +476,7 @@ const Matrix& Node::getWorldViewMatrix() const
     return worldView;
 }
 
+//在仿射变换后，用于计算法向量
 const Matrix& Node::getInverseTransposeWorldViewMatrix() const
 {
     static Matrix invTransWorldView;

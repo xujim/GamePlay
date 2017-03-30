@@ -139,7 +139,7 @@ inline void MathUtil::transposeMatrix(const float* m, float* dst)
     };
     memcpy(dst, t, MATRIX_SIZE);
 }
-
+//矩阵表达式(x,y,z,1)而非其转置，所以这里用左乘：v x M这种形式
 inline void MathUtil::transformVector4(const float* m, float x, float y, float z, float w, float* dst)
 {
     dst[0] = x * m[0] + y * m[4] + z * m[8] + w * m[12];

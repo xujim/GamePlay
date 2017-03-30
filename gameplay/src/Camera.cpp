@@ -234,6 +234,7 @@ void Camera::setNode(Node* node)
     }
 }
 
+//从世界坐标系到相机坐标系的转换矩阵
 const Matrix& Camera::getViewMatrix() const
 {
     if (_bits & CAMERA_DIRTY_VIEW)
