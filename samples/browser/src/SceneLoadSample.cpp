@@ -52,7 +52,7 @@ void SceneLoadSample::initialize()
     
     // Rotate the node x/z to face the camera
 //    Camera *camera = _scene->getActiveCamera();
-    Node *node = _scene->findNode("Group001");
+    Node *node = _scene->getFirstNode();//findNode("Group001");
     Matrix m;
 //    Matrix::createBillboard(node->getTranslationWorld(), camera->getNode()->getTranslationWorld(), camera->getNode()->getUpVectorWorld(), &m);
 //    Quaternion q;
@@ -62,9 +62,15 @@ void SceneLoadSample::initialize()
     const BoundingSphere &bs = node->getBoundingSphere();
     Vector3 unitV;
     bs.center.normalize(&unitV);
-    Vector3 vec(-bs.center+unitV*bs.radius*3);
+    Vector3 forwardV = bs.center;
+    Vector3 leftV(1,0,0);
+    Vector3 upV;
+    Vector3::cross(forwardV, leftV, &upV);
+    Vector3 vec(bs.center-unitV*bs.radius);
 //    cameraNode->setTranslation(vec);
-    Matrix::createLookAt(vec, bs.center, Vector3(0,1,0), &m);
+    Matrix::createLookAt(Vector3(0,0,0), bs.center, upV, &m);
+    cameraNode->rotate(m);
+    cameraNode->translate(vec);
     
 //    cameraNode->rotate(m);
 //    cameraNode->getUpVectorWorld()
@@ -157,7 +163,7 @@ void SceneLoadSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned i
         break;
     case Touch::TOUCH_MOVE:
 //            Node *node = _scene->getActiveCamera()->getNode();
-            Node *node = _scene->findNode("Group001");
+            Node *node = _scene->getFirstNode();//findNode("Group001");
             node->rotateX(MATH_DEG_TO_RAD(0.01*(y-_lastY)));
             node->rotateY(MATH_DEG_TO_RAD(0.01*(x-_lastX)));
         break;
