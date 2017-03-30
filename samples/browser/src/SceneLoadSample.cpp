@@ -36,7 +36,7 @@ void SceneLoadSample::initialize()
     SAFE_RELEASE(bundle);
 
     // Create the camera.
-    Camera* camera = Camera::createPerspective(120.0f, getAspectRatio(), 1.0f, 10000.0f);
+    Camera* camera = Camera::createPerspective(120.0f, getAspectRatio(), 0.1f, 10000.0f);
     Node* cameraNode = _scene->addNode("camera");
     
     // Attach the camera to a node. This determines the position of the camera.
@@ -46,8 +46,28 @@ void SceneLoadSample::initialize()
     _scene->setActiveCamera(camera);
     
     //    Node *cameraNode = _scene->getActiveCamera()->getNode();
-    cameraNode->translateY(20000*0.01f);
-    cameraNode->translateZ(20000*0.06f);
+//    cameraNode->translateY(20000*0.01f);
+//    cameraNode->translateZ(1200.0f);
+    
+    
+    // Rotate the node x/z to face the camera
+//    Camera *camera = _scene->getActiveCamera();
+    Node *node = _scene->findNode("Group001");
+    Matrix m;
+//    Matrix::createBillboard(node->getTranslationWorld(), camera->getNode()->getTranslationWorld(), camera->getNode()->getUpVectorWorld(), &m);
+//    Quaternion q;
+//    m.getRotation(&q);
+//    node->setRotation(q);
+    
+    const BoundingSphere &bs = node->getBoundingSphere();
+    Vector3 unitV;
+    bs.center.normalize(&unitV);
+    Vector3 vec(-bs.center+unitV*bs.radius*3);
+//    cameraNode->setTranslation(vec);
+    Matrix::createLookAt(vec, bs.center, Vector3(0,1,0), &m);
+    
+//    cameraNode->rotate(m);
+//    cameraNode->getUpVectorWorld()
     
     SAFE_RELEASE(camera);
     
@@ -161,6 +181,8 @@ void SceneLoadSample::keyEvent(Keyboard::KeyEvent evt, int key)
 bool SceneLoadSample::drawScene(Node* node)
 {
     Drawable* drawable = node->getDrawable();
+    
+    
     if (drawable)
         drawable->draw(_wireFrame);
     return true;
