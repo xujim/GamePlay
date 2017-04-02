@@ -435,6 +435,7 @@ bool Node::isStatic() const
     return (_collisionObject && _collisionObject->isStatic());
 }
 
+//
 const Matrix& Node::getWorldMatrix() const
 {
     if (_dirtyBits & NODE_DIRTY_WORLD)

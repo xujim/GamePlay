@@ -234,7 +234,7 @@ void Camera::setNode(Node* node)
     }
 }
 
-//从世界坐标系到相机坐标系的转换矩阵
+//view matrix是从世界坐标系变换到相机坐标系的矩阵,设世界坐标系的点Pw，相机坐标系Pv，满足Pw x ViewMatrix.getTranspose() = Pv
 const Matrix& Camera::getViewMatrix() const
 {
     if (_bits & CAMERA_DIRTY_VIEW)
@@ -242,7 +242,7 @@ const Matrix& Camera::getViewMatrix() const
         if (_node)
         {
             // The view matrix is the inverse of our transform matrix.
-            _node->getWorldMatrix().invert(&_view);
+            _node->getWorldMatrix().invert(&_view);//world matrix是相机节点从相机坐标系变换到世界坐标系的矩阵
         }
         else
         {

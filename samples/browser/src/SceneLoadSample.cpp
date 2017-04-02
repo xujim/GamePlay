@@ -6,7 +6,7 @@
 #endif
 
 SceneLoadSample::SceneLoadSample()
-    : _font(NULL), _scene(NULL), _wireFrame(false), _translate(false), _lastY(0), _lastX(0)
+    : _font(NULL), _scene(NULL), _wireFrame(false), _translate(false), _lastY(0), _lastX(0), _lastMouseY(0)
 {
     
 }
@@ -31,7 +31,7 @@ void SceneLoadSample::initialize()
     // Visit all the nodes in the scene, drawing the models/mesh.
 //    _scene->visit(this, &SceneLoadSample::initializeMaterials);
     
-    Bundle* bundle = Bundle::create("res/common/shafa3.gpb");
+    Bundle* bundle = Bundle::create("res/common/desk2.gpb");
     _scene = bundle->loadScene();
     SAFE_RELEASE(bundle);
 
@@ -47,7 +47,7 @@ void SceneLoadSample::initialize()
     
     //    Node *cameraNode = _scene->getActiveCamera()->getNode();
 //    cameraNode->translateY(20000*0.01f);
-//    cameraNode->translateZ(1200.0f);
+    cameraNode->translateZ(50.0f);
     
     
     // Rotate the node x/z to face the camera
@@ -69,8 +69,8 @@ void SceneLoadSample::initialize()
     Vector3 vec(bs.center-unitV*bs.radius);
 //    cameraNode->setTranslation(vec);
     Matrix::createLookAt(Vector3(0,0,0), bs.center, upV, &m);
-    cameraNode->rotate(m);
-    cameraNode->translate(vec);
+//    cameraNode->rotate(m);
+//    cameraNode->translate(vec);
     
 //    cameraNode->rotate(m);
 //    cameraNode->getUpVectorWorld()
@@ -162,12 +162,32 @@ void SceneLoadSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned i
             _translate = false;
         break;
     case Touch::TOUCH_MOVE:
-//            Node *node = _scene->getActiveCamera()->getNode();
-            Node *node = _scene->getFirstNode();//findNode("Group001");
+            Node *node = _scene->getActiveCamera()->getNode();
+//            Node *node = _scene->getFirstNode();//findNode("Group001");
             node->rotateX(MATH_DEG_TO_RAD(0.01*(y-_lastY)));
             node->rotateY(MATH_DEG_TO_RAD(0.01*(x-_lastX)));
+//            const Matrix m = node->getWorldMatrix();
+//            Matrix dst;
+//            m.rotateX(MATH_DEG_TO_RAD(-0.01*(y-_lastY)), &dst);
+//            dst.rotateY(MATH_DEG_TO_RAD(-0.01*(x-_lastX)));
+//            Vector3 v = node->getTranslationWorld();
+            
         break;
     };
+}
+
+bool SceneLoadSample::mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta)
+{
+    switch (evt)
+    {
+        case Mouse::MOUSE_WHEEL:
+            Node *node = _scene->getActiveCamera()->getNode();
+            //            Node *node = _scene->getFirstNode();//findNode("Group001");
+            node->translateForward(wheelDelta);
+            break;
+    };
+    _lastMouseY = y;
+    return false;
 }
 
 void SceneLoadSample::keyEvent(Keyboard::KeyEvent evt, int key)

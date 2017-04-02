@@ -18,6 +18,7 @@ public:
     void touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex);
 
     void keyEvent(Keyboard::KeyEvent evt, int key);
+    bool mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta);
 
 protected:
 
@@ -39,7 +40,7 @@ private:
     Scene* _scene;
     bool _wireFrame;
     bool _translate;
-    float _lastY, _lastX;
+    float _lastY, _lastX, _lastMouseY;
 };
 
 #endif

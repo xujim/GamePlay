@@ -66,6 +66,7 @@ void Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosit
                  up.x, up.y, up.z, dst);
 }
 
+//    构建view matrix，即世界坐标系转换到视图坐标的矩阵，其也是视图坐标系中的点变换到世界坐标系应该前乘的矩阵
 void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePositionZ,
                           float targetPositionX, float targetPositionY, float targetPositionZ,
                           float upX, float upY, float upZ, Matrix* dst)
@@ -78,7 +79,7 @@ void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePosit
     up.normalize();
 
     Vector3 zaxis;
-    Vector3::subtract(eye, target, &zaxis);
+    Vector3::subtract(eye, target, &zaxis);//target - eye
     zaxis.normalize();
 
     Vector3 xaxis;
