@@ -32,12 +32,13 @@ Mesh::~Mesh()
     }
 }
 
+//    vertexFormat“不会”保存vertex在客户端的数据，比如坐标，颜色等，数据通过setVertexData函数来传递过来
 Mesh* Mesh::createMesh(const VertexFormat& vertexFormat, unsigned int vertexCount, bool dynamic)
 {
     GLuint vbo;
     GL_ASSERT( glGenBuffers(1, &vbo) );
     GL_ASSERT( glBindBuffer(GL_ARRAY_BUFFER, vbo) );
-    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );
+    GL_ASSERT( glBufferData(GL_ARRAY_BUFFER, vertexFormat.getVertexSize() * vertexCount, NULL, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW) );//仅仅是分配了vbo的空间
 
     Mesh* mesh = new Mesh(vertexFormat);
     mesh->_vertexCount = vertexCount;
@@ -283,6 +284,7 @@ void Mesh::setVertexData(const void* vertexData, unsigned int vertexStart, unsig
     }
     else
     {
+//        此处不需要再此调用glBufferData,因为在构造mesh对象的时候已经调用了
         if (vertexCount == 0)
         {
             vertexCount = _vertexCount - vertexStart;

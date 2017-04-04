@@ -26,7 +26,7 @@ class Mesh : public Ref
 public:
 
     /**
-     * Defines supported index formats.
+     * Defines supported index formats.节点类型
      */
     enum IndexFormat
     {
@@ -36,7 +36,7 @@ public:
     };
 
     /**
-     * Defines supported primitive types.
+     * Defines supported primitive types.图元类型
      */
     enum PrimitiveType
     {

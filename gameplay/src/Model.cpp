@@ -269,7 +269,7 @@ static bool drawWireframe(Mesh* mesh)
             unsigned int vertexCount = mesh->getVertexCount();
             for (unsigned int i = 2; i < vertexCount; ++i)
             {
-                GL_ASSERT( glDrawArrays(GL_LINE_LOOP, i-2, 3) );
+                GL_ASSERT( glDrawArrays(GL_LINE_LOOP, i-2, 3) );//绘制wireframe不需要考虑三角形的方向
             }
         }
         return true;
@@ -315,7 +315,7 @@ static bool drawWireframe(MeshPart* part)
         {
             for (size_t i = 2; i < indexCount; ++i)
             {
-                GL_ASSERT( glDrawElements(GL_LINE_LOOP, 3, part->getIndexFormat(), ((const GLvoid*)((i-2)*indexSize))) );
+                GL_ASSERT( glDrawElements(GL_LINE_LOOP, 3, part->getIndexFormat(), ((const GLvoid*)((i-2)*indexSize))) );//绘制wireframe不需要考虑三角形的方向
             }
         }
         return true;
