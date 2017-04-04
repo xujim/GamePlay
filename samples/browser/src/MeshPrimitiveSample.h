@@ -38,6 +38,7 @@ private:
     Model* _triangleStrip;
     Model* _lineStrip;
     Model* _lines;
+    Model* _axis;
     Model* _points;
     Matrix _viewProjectionMatrix;
     Vector2 _touchPoint;

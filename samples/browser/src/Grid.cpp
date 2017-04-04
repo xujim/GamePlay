@@ -23,6 +23,7 @@ Mesh* createGridMesh(unsigned int lineCount)
             color.set(0.45f, 0.45f, 0.45f, 1.0f);
         }
 
+//        先画z轴平行的线
         // The Z axis is blue
         if (value == 0.0f)
         {
@@ -44,6 +45,7 @@ Mesh* createGridMesh(unsigned int lineCount)
         vertices[++i] = color.y;
         vertices[++i] = color.z;
 
+//        再画x轴
         // The X axis is red
         if (value == 0.0f)
         {

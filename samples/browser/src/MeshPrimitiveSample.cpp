@@ -148,6 +148,41 @@ static Mesh* createLinesMesh()
 }
 
 
+static Mesh * createAxis(float size){
+    unsigned int vertexCount = 6;
+    std::vector<float> vertices;
+    vertices.reserve(vertexCount * 6);
+    
+    float vertex[] = {
+        0,0,0,    1,0,0,
+        size,0,0,  1,0,0,
+        0,0,0,      0,1,0,
+        0,size,0,   0,1,0,
+        0,0,0,  0,0,1,
+        0,0,size,   0,0,1
+    };
+    
+    vertices.assign(vertex, vertex+36);
+    
+    VertexFormat::Element elements[] =
+    {
+        VertexFormat::Element(VertexFormat::POSITION, 3),
+        VertexFormat::Element(VertexFormat::COLOR, 3)
+    };
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+    if (mesh == NULL)
+    {
+        GP_ERROR("Failed to create mesh.");
+        return NULL;
+    }
+    mesh->setPrimitiveType(Mesh::LINES);
+    //
+    mesh->setVertexData(&vertices[0], 0, vertexCount);
+    return mesh;
+    
+};
+
+
 MeshPrimitiveSample::MeshPrimitiveSample()
     : _font(NULL), _triangles(NULL), _triangleStrip(NULL), _lineStrip(NULL), _lines(NULL), _points(NULL)
 {
@@ -189,6 +224,12 @@ void MeshPrimitiveSample::initialize()
     _lines = Model::create(lineMesh);
     SAFE_RELEASE(lineMesh);
     _lines->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "VERTEX_COLOR");
+    
+    
+    Mesh* axisMesh = createAxis(8);
+    _axis = Model::create(axisMesh);
+    SAFE_RELEASE(axisMesh);
+    _axis->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "VERTEX_COLOR");
 }
 
 void MeshPrimitiveSample::finalize()
@@ -198,6 +239,7 @@ void MeshPrimitiveSample::finalize()
     SAFE_RELEASE(_triangleStrip);
     SAFE_RELEASE(_lineStrip);
     SAFE_RELEASE(_lines);
+    SAFE_RELEASE(_axis);
     SAFE_RELEASE(_points);
     SAFE_RELEASE(_font);
 }
@@ -248,6 +290,13 @@ void MeshPrimitiveSample::render(float elapsedTime)
     Matrix::multiply(m, wvp, &m);
     _lines->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(m);
     _lines->draw();
+    
+    
+    m.setIdentity();
+//    m.translate(0, 0, 0);
+    Matrix::multiply(m, wvp, &m);
+    _axis->getMaterial()->getParameter("u_worldViewProjectionMatrix")->setValue(m);
+    _axis->draw();
 
     drawFrameRate(_font, Vector4(0, 0.5f, 1, 1), 5, 1, getFrameRate());
 }
@@ -268,7 +317,7 @@ void MeshPrimitiveSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsign
         }
         break;
     case Touch::TOUCH_RELEASE:
-        _touchPoint.set(-1.0f, -1.0f);
+//        _touchPoint.set(-1.0f, -1.0f);
         break;
     case Touch::TOUCH_MOVE:
         if (_touchPoint.x > 0.0f && _touchPoint.y > 0.0f)

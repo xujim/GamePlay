@@ -97,6 +97,8 @@ const char* Transform::getTypeName() const
     return "Transform";
 }
 
+//通过这个矩阵，点从当前坐标系可以变换到之前的坐标系。从坐标系变换的角度：之前的坐标系通过这个矩阵变换到当前坐标系
+//
 const Matrix& Transform::getMatrix() const
 {
     if (_matrixDirtyBits & (DIRTY_TRANSLATION | DIRTY_ROTATION | DIRTY_SCALE))

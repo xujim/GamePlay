@@ -38,6 +38,7 @@ private:
 
     Font* _font;
     Scene* _scene;
+    Model* _axis;
     bool _wireFrame;
     bool _translate;
     float _lastY, _lastX, _lastMouseY;

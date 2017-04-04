@@ -1,9 +1,86 @@
 #include "SceneLoadSample.h"
 #include "SamplesGame.h"
+#include "Grid.h"
 
 #if defined(ADD_SAMPLE)
     ADD_SAMPLE("Graphics", "Scene Loading", SceneLoadSample, 16);
 #endif
+
+static Mesh * createAxis(float size){
+    unsigned int vertexCount = 6;
+    std::vector<float> vertices;
+    vertices.reserve(vertexCount * 6);
+    
+    float vertex[] = {
+        0,0,0,    1,0,0,
+        size,0,0,  1,0,0,
+        0,0,0,      0,1,0,
+        0,size,0,   0,1,0,
+        0,0,0,  0,0,1,
+        0,0,size,   0,0,1
+    };
+    
+    vertices.assign(vertex, vertex+36);
+    
+    VertexFormat::Element elements[] =
+    {
+        VertexFormat::Element(VertexFormat::POSITION, 3),
+        VertexFormat::Element(VertexFormat::COLOR, 3)
+    };
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+    if (mesh == NULL)
+    {
+        GP_ERROR("Failed to create mesh.");
+        return NULL;
+    }
+    mesh->setPrimitiveType(Mesh::LINES);
+    //
+    mesh->setVertexData(&vertices[0], 0, vertexCount);
+    return mesh;
+    
+}
+
+static void drawAxis1(float size)
+{
+    glDepthFunc(GL_ALWAYS);     // to avoid visual artifacts with grid lines
+    glDisable(GL_LIGHTING);
+    glPushMatrix();             //NOTE: There is a bug on Mac misbehaviours of
+    //      the light position when you draw GL_LINES
+    //      and GL_POINTS. remember the matrix.
+    
+    // draw axis
+    glLineWidth(3);
+    glBegin(GL_LINES);
+    glColor3f(1, 0, 0);//red
+    glVertex3f(0, 0, 0);
+    glVertex3f(size, 0, 0);//x-
+    glColor3f(0, 1, 0);//green
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, size, 0);//y-
+    glColor3f(0, 0, 1);//blue
+    glVertex3f(0, 0, 0);
+    glVertex3f(0, 0, size);//z-
+    glEnd();
+    glLineWidth(1);
+    
+    // draw arrows(actually big square dots)
+    glPointSize(5);
+    glBegin(GL_POINTS);
+    glColor3f(1, 0, 0);
+    glVertex3f(size, 0, 0);
+    glColor3f(0, 1, 0);
+    glVertex3f(0, size, 0);
+    glColor3f(0, 0, 1);
+    glVertex3f(0, 0, size);
+    glEnd();
+    glPointSize(1);
+    
+    // restore default settings
+    glPopMatrix();
+    glEnable(GL_LIGHTING);
+    glDepthFunc(GL_LEQUAL);
+}
+
 
 SceneLoadSample::SceneLoadSample()
     : _font(NULL), _scene(NULL), _wireFrame(false), _translate(false), _lastY(0), _lastX(0), _lastMouseY(0)
@@ -11,11 +88,57 @@ SceneLoadSample::SceneLoadSample()
     
 }
 
+static Mesh* createLinesMesh()
+{
+    float scale = 0.2f;
+    unsigned int vertexCount = 40;
+    
+    std::vector<float> vertices;
+    vertices.reserve(vertexCount * 6);
+    for (unsigned int i = 0; i < vertexCount; ++i)
+    {
+        // x, y, z, r, g, b
+        vertices.push_back(MATH_RANDOM_MINUS1_1() * scale);
+        vertices.push_back(MATH_RANDOM_MINUS1_1() * scale);
+        vertices.push_back(MATH_RANDOM_MINUS1_1() * scale);
+        vertices.push_back(MATH_RANDOM_0_1());
+        vertices.push_back(MATH_RANDOM_0_1());
+        vertices.push_back(MATH_RANDOM_0_1());
+    }
+    
+    VertexFormat::Element elements[] =
+    {
+        VertexFormat::Element(VertexFormat::POSITION, 3),
+        VertexFormat::Element(VertexFormat::COLOR, 3)
+    };
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+    if (mesh == NULL)
+    {
+        GP_ERROR("Failed to create mesh.");
+        return NULL;
+    }
+    mesh->setPrimitiveType(Mesh::LINES);
+    //
+    mesh->setVertexData(&vertices[0], 0, vertexCount);
+    return mesh;
+}
+
 static Material* createMaterial()
 {
     Material* material = Material::create("res/shaders/colored.vert", "res/shaders/colored.frag", "VERTEX_COLOR");
     GP_ASSERT(material && material->getStateBlock());
     return material;
+}
+
+static void loadGrid(Scene* scene)
+{
+    assert(scene);
+    Model* gridModel = createGridModel();
+    assert(gridModel);
+    gridModel->setMaterial("res/common/grid.material");
+    Node* node = scene->addNode("grid");
+    node->setDrawable(gridModel);
+    SAFE_RELEASE(gridModel);
 }
 
 void SceneLoadSample::initialize()
@@ -34,6 +157,17 @@ void SceneLoadSample::initialize()
     Bundle* bundle = Bundle::create("res/common/desk2.gpb");
     _scene = bundle->loadScene();
     SAFE_RELEASE(bundle);
+    
+    
+    Mesh* axisMesh = createAxis(40);
+    _axis = Model::create(axisMesh);
+    SAFE_RELEASE(axisMesh);
+    Node *axisNode = _scene->addNode("axis");
+    axisNode->setDrawable(_axis);
+    _axis->setMaterial("res/shaders/colored.vert", "res/shaders/colored.frag", "VERTEX_COLOR");
+    
+    loadGrid(_scene);
+
 
     // Create the camera.
     Camera* camera = Camera::createPerspective(120.0f, getAspectRatio(), 0.1f, 10000.0f);
@@ -120,6 +254,8 @@ void SceneLoadSample::finalize()
 {
     SAFE_RELEASE(_font);
     SAFE_RELEASE(_scene);
+    
+    SAFE_RELEASE(_axis);
 }
 
 void SceneLoadSample::update(float elapsedTime)
@@ -131,12 +267,43 @@ void SceneLoadSample::render(float elapsedTime)
 {
     // Clear the color and depth buffers
     clear(CLEAR_COLOR_DEPTH, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0);
-
+    Node *cameraNode = _scene->getActiveCamera()->getNode();
     if(_translate){
-        Node *cameraNode = _scene->getActiveCamera()->getNode();
         cameraNode->translateY(elapsedTime*0.01f);
         cameraNode->translateZ(elapsedTime*0.06f);
     }
+    
+    //draw camera to target position
+    glLineWidth(60);
+    unsigned int vertexCount = 2;
+    std::vector<float> vertices;
+    vertices.reserve(vertexCount * 6);
+    Vector3 v = cameraNode->getTranslation();
+    
+    gameplay::print("-----camera pos:%f,%f,%f\n",v.x,v.y,v.z);
+    float vertex[] = {
+        v.x,v.y,v.z,    1,0.5,0,
+        0,0,0,  1,0.6,0
+    };
+    
+    vertices.assign(vertex, vertex+12);
+    VertexFormat::Element elements[] =
+    {
+        VertexFormat::Element(VertexFormat::POSITION, 3),
+        VertexFormat::Element(VertexFormat::COLOR, 3)
+    };
+    Mesh* mesh = Mesh::createMesh(VertexFormat(elements, 2), vertexCount, false);
+    if (mesh != NULL)
+    {
+        mesh->setPrimitiveType(Mesh::LINES);
+        mesh->setVertexData(&vertices[0], 0, vertexCount);
+    }
+    Model *m = Model::create(mesh);
+    m->draw();
+    SAFE_RELEASE(m);
+    glLineWidth(1);
+
+    
     // Visit all the nodes in the scene, drawing the models/mesh.
     _scene->visit(this, &SceneLoadSample::drawScene);
 
@@ -164,8 +331,29 @@ void SceneLoadSample::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned i
     case Touch::TOUCH_MOVE:
             Node *node = _scene->getActiveCamera()->getNode();
 //            Node *node = _scene->getFirstNode();//findNode("Group001");
-            node->rotateX(MATH_DEG_TO_RAD(0.01*(y-_lastY)));
-            node->rotateY(MATH_DEG_TO_RAD(0.01*(x-_lastX)));
+            const Matrix wm = node->getWorldMatrix();
+            Matrix rotate;
+//            wm.rotateX(MATH_DEG_TO_RAD(45), &dst);
+            rotate.rotateX(MATH_DEG_TO_RAD(0.01*(y-_lastY)), &rotate);
+            rotate.rotateY(MATH_DEG_TO_RAD(0.01*(x-_lastX)));
+            rotate.invert();
+            Matrix dst;
+            Matrix::multiply(rotate, wm, &dst);
+            Quaternion qua;
+            dst.getRotation(&qua);
+            Vector3 trans;
+            dst.getTranslation(&trans);
+            node->set(Vector3(1,1,1), qua, trans);
+            
+            gameplay::print("-----camera:%f,%f,%f\n",trans.x,trans.y,trans.z);
+            
+            Vector4 p(0,0,0,1);
+            p*=dst;
+            gameplay::print("-----test:%f,%f,%f\n",p.x,p.y,p.z);
+            
+//            node->translate(trans);
+//            node->rotateX(MATH_DEG_TO_RAD(0.01*(y-_lastY)));
+//            node->rotateY(MATH_DEG_TO_RAD(0.01*(x-_lastX)));
 //            const Matrix m = node->getWorldMatrix();
 //            Matrix dst;
 //            m.rotateX(MATH_DEG_TO_RAD(-0.01*(y-_lastY)), &dst);
@@ -184,6 +372,7 @@ bool SceneLoadSample::mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelD
             Node *node = _scene->getActiveCamera()->getNode();
             //            Node *node = _scene->getFirstNode();//findNode("Group001");
             node->translateForward(wheelDelta);
+//            node->translateZ(wheelDelta);
             break;
     };
     _lastMouseY = y;
