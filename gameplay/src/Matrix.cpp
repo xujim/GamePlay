@@ -60,6 +60,7 @@ const Matrix& Matrix::zero()
     return m;
 }
 
+//    创建视点矩阵
 void Matrix::createLookAt(const Vector3& eyePosition, const Vector3& targetPosition, const Vector3& up, Matrix* dst)
 {
     createLookAt(eyePosition.x, eyePosition.y, eyePosition.z, targetPosition.x, targetPosition.y, targetPosition.z,
@@ -105,6 +106,7 @@ void Matrix::createLookAt(float eyePositionX, float eyePositionY, float eyePosit
     dst->m[10] = zaxis.z;
     dst->m[11] = 0.0f;
 
+//    translation
     dst->m[12] = -Vector3::dot(xaxis, eye);
     dst->m[13] = -Vector3::dot(yaxis, eye);
     dst->m[14] = -Vector3::dot(zaxis, eye);
