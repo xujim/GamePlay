@@ -185,6 +185,7 @@ GLint Texture::getFormatInternal(Format format)
     }
 }
 
+//获取所谓的纹素的格式？？？
 GLenum Texture::getFormatTexel(Format format)
 {
     switch (format)

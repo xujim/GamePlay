@@ -87,6 +87,7 @@ public:
      * itself, a sampler stores per-instance texture state information, such
      * as wrap and filter modes.
      */
+//    目前来看是用glTexParameteri来设置texture的采样参数
     class Sampler : public Ref
     {
         friend class Texture;

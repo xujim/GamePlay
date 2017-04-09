@@ -20,6 +20,7 @@ class NodeCloneContext;
  *
  * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Materials
  */
+//    Material与Pass的关系，还有texture呢？
 class Material : public RenderState
 {
     friend class Technique;

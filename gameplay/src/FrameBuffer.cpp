@@ -172,6 +172,7 @@ void FrameBuffer::setRenderTarget(RenderTarget* target, Texture::CubeFace face, 
     setRenderTarget(target, index, GL_TEXTURE_CUBE_MAP_POSITIVE_X + face);
 }
 
+//  NOTES:  render target是啥？
 void FrameBuffer::setRenderTarget(RenderTarget* target, unsigned int index, GLenum textureTarget)
 {
     GP_ASSERT(index < _maxRenderTargets);

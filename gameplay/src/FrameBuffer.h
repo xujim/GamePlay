@@ -22,6 +22,7 @@ namespace gameplay
  *
  * To bind the default frame buffer, call FrameBuffer::bindDefault.
  */
+//   阴影需要通过Off screen
 class FrameBuffer : public Ref
 {
     friend class Game;

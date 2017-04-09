@@ -613,6 +613,7 @@ void Effect::setValue(Uniform* uniform, const Texture::Sampler* sampler)
     GP_ASSERT((sampler->getTexture()->getType() == Texture::TEXTURE_2D && uniform->_type == GL_SAMPLER_2D) || 
         (sampler->getTexture()->getType() == Texture::TEXTURE_CUBE && uniform->_type == GL_SAMPLER_CUBE));
 
+//   激活当前的纹理单元
     GL_ASSERT( glActiveTexture(GL_TEXTURE0 + uniform->_index) );
 
     // Bind the sampler - this binds the texture and applies sampler state
