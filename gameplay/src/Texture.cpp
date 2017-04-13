@@ -352,6 +352,7 @@ Texture* Texture::create(TextureHandle handle, int width, int height, Format for
     return texture;
 }
 
+    //给texture传递数据，之前已经分配了内存
 void Texture::setData(const unsigned char* data)
 {
     // Don't work with any compressed or cached textures
@@ -1210,6 +1211,7 @@ bool Texture::isCompressed() const
     return _compressed;
 }
 
+    //默认texture的采样参数，此处并未使用glBindSampler之类的函数新建一个sampler，而是采用默认的
 Texture::Sampler::Sampler(Texture* texture)
     : _texture(texture), _wrapS(Texture::REPEAT), _wrapT(Texture::REPEAT), _wrapR(Texture::REPEAT)
 {
@@ -1259,7 +1261,7 @@ void Texture::Sampler::bind()
 {
     GP_ASSERT( _texture );
 
-    GLenum target = (GLenum)_texture->_type;
+    GLenum target = (GLenum)_texture->_type;//texture的类型，如CUBE,2D等等
     if (__currentTextureId != _texture->_handle)
     {
         GL_ASSERT( glBindTexture(target, _texture->_handle) );

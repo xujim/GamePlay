@@ -94,6 +94,7 @@ public:
      *
      * @return The newly created and bound Material, or NULL if the Material could not be created.
      */
+    //此处defines就是预处理符，用于设置glsl中的相关defined开关
     Material* setMaterial(const char* vshPath, const char* fshPath, const char* defines = NULL, int partIndex = -1);
 
     /**

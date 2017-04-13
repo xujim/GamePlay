@@ -252,6 +252,7 @@ Texture::Sampler* MaterialParameter::setValue(const char* texturePath, bool gene
     GP_ASSERT(texturePath);
     clearValue();
 
+    //将sampler和材质绑定
     Texture::Sampler* sampler = Texture::Sampler::create(texturePath, generateMipmaps);
     if (sampler)
     {

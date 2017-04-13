@@ -29,7 +29,7 @@ Material* setTextureUnlitMaterial(Model* model, const char* texturePath, bool mi
     material->setParameterAutoBinding("u_worldViewProjectionMatrix", "WORLD_VIEW_PROJECTION_MATRIX");
 
     // Load the texture from file.
-    Texture::Sampler* sampler = material->getParameter("u_diffuseTexture")->setValue(texturePath, mipmap);
+    Texture::Sampler* sampler = material->getParameter("u_diffuseTexture")->setValue(texturePath, mipmap);//生成texture,会在sampler::bind的时候设置采样参数
     if (mipmap)
         sampler->setFilterMode(Texture::LINEAR_MIPMAP_LINEAR, Texture::LINEAR);
     else
@@ -80,6 +80,7 @@ void TextureSample::initialize()
     }
     // Textured quad points
     {
+        //NOTES:这里似乎有些不合理啊，纹理映射的坐标和点的坐标一致，但纹理坐标的原点应该是左上角啊
         Mesh* mesh = Mesh::createQuad(Vector3(0, cubeSize, 0), Vector3(0, 0, 0), Vector3(cubeSize, cubeSize, 0), Vector3(cubeSize, 0, 0));
         Node* node = addQuadModelAndNode(_scene, mesh);
         SAFE_RELEASE(mesh);
