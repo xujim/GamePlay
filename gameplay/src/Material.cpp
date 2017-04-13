@@ -113,19 +113,22 @@ Material* Material::create(Effect* effect)
     return material;
 }
 
+    //材质是什么？材质就是glsl的函数
 Material* Material::create(const char* vshPath, const char* fshPath, const char* defines)
 {
     GP_ASSERT(vshPath);
     GP_ASSERT(fshPath);
 
+    //NOTES:Material是继承自RenderState，RenderState这又是啥东西？
     // Create a new material with a single technique and pass for the given effect
     Material* material = new Material();
 
+    //从以下看，material一对多个technique,technique一对多个pass,每个pass中含有一个effect
     Technique* technique = new Technique(NULL, material);
     material->_techniques.push_back(technique);
 
     Pass* pass = new Pass(NULL, technique);
-    if (!pass->initialize(vshPath, fshPath, defines))
+    if (!pass->initialize(vshPath, fshPath, defines))//内部生成effect
     {
         GP_WARN("Failed to create pass for material: vertexShader = %s, fragmentShader = %s, defines = %s", vshPath, fshPath, defines ? defines : "");
         SAFE_RELEASE(pass);

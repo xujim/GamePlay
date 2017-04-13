@@ -28,6 +28,7 @@ bool Pass::initialize(const char* vshPath, const char* fshPath, const char* defi
     SAFE_RELEASE(_vaBinding);
 
     // Attempt to create/load the effect.
+    //Effect类似与glsl的program，代表着shader程序
     _effect = Effect::createFromFile(vshPath, fshPath, defines);
     if (_effect == NULL)
     {
@@ -69,11 +70,14 @@ void Pass::bind()
     GP_ASSERT(_effect);
 
     // Bind our effect.
-    _effect->bind();
+    _effect->bind();//使用当前program
 
+    //注意：下一行是关键，用于将当前RenderState中的参数（glsl相关参数，如mvp matrix等）绑定到当前pass的effect（即glsl）中
     // Bind our render state
+    //此处调用父类实现，因为父类的bind不显示调用，会被隐藏
     RenderState::bind(this);
 
+    //绑定节点属性，如坐标，颜色，法向量，纹理等等
     // If we have a vertex attribute binding, bind it
     if (_vaBinding)
     {

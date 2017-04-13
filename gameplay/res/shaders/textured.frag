@@ -7,6 +7,7 @@ precision mediump float;
 #endif
 
 //DIRECTIONAL_LIGHT_COUNT这些defined的预处理符会通过程序外部传入或者通过配置文件传入。统一经过如createFromSource之类的函数会有个define参数，它会修改传入的glsl文件
+//在Effect::replaceDefines函数里会替换defines
 #ifndef DIRECTIONAL_LIGHT_COUNT
 #define DIRECTIONAL_LIGHT_COUNT 0
 #endif

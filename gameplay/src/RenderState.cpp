@@ -164,6 +164,8 @@ void RenderState::setParameterAutoBinding(const char* name, AutoBinding autoBind
     setParameterAutoBinding(name, autoBindingToString(autoBinding));
 }
 
+    //设置参数，就会给renderstate中的_parameters集合中添加一个名字为name的参数，后期用于绑定
+    //这里可以是material全局级别的，也可以是technique级别的或者pass级别的
 void RenderState::setParameterAutoBinding(const char* name, const char* autoBinding)
 {
     GP_ASSERT(name);
@@ -237,6 +239,7 @@ void RenderState::applyAutoBinding(const char* uniformName, const char* autoBind
 {
     GP_ASSERT(_nodeBinding);
 
+    //getParameter会根据uniformName懒创建参数
     MaterialParameter* param = getParameter(uniformName);
     GP_ASSERT(param);
 
@@ -417,6 +420,7 @@ void RenderState::bind(Pass* pass)
         rs = rs->_parent;
     }
 
+    //主要是重置如cullface, blend等状态
     // Restore renderer state to its default, except for explicitly specified states
     StateBlock::restore(stateOverrideBits);
 
@@ -428,11 +432,13 @@ void RenderState::bind(Pass* pass)
         for (size_t i = 0, count = rs->_parameters.size(); i < count; ++i)
         {
             GP_ASSERT(rs->_parameters[i]);
+            //将参数设置到effect即glsl program中
             rs->_parameters[i]->bind(effect);
         }
 
         if (rs->_state)
         {
+            //设置一些状态变量，如CULLFACE等
             rs->_state->bindNoRestore();
         }
     }
