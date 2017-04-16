@@ -6,6 +6,9 @@
 // The number of rows in each palette matrix.
 #define PALETTE_ROWS 3
 
+//NOTES:关于骨骼蒙皮动画可参考：http://blog.csdn.net/jimoshuicao/article/details/9253999
+//http://blog.csdn.net/jimoshuicao/article/details/9283071
+//http://www.cnblogs.com/zhanglitong/p/3196752.html
 namespace gameplay
 {
 

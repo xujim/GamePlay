@@ -45,6 +45,7 @@ Scene* Joint::getScene() const
     // Overrides Node::getScene() to search the node our skins.
     for (const SkinReference* itr = &_skin; itr && itr->skin; itr = itr->next)
     {
+        //NOTES:joint和skinmesh之间是一对多关系吗？似乎是多对多关系
         Model* model = itr->skin ? itr->skin->getModel() : NULL;
         if (model)
         {

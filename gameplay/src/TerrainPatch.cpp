@@ -56,6 +56,7 @@ TerrainPatch::~TerrainPatch()
     }
 }
 
+    //terrain和patch有何关系？terrain其实是和height field联系的
 TerrainPatch* TerrainPatch::create(Terrain* terrain, unsigned int index,
                                    unsigned int row, unsigned int column,
                                    float* heights, unsigned int width, unsigned int height,
